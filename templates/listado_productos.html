@@ -1,0 +1,61 @@
+<header>
+    <h1>Listado de productos</h1>
+ 
+    <div>
+        <h2>Formulario de filtros:</h2>
+        <form method="get">
+            <div>
+                <label for="nombre">Filtro por nombre: </label>
+                <input type="text" value="{{nombre}}" name="nombre" id="nombre">
+            </div>
+            <div>
+                <label for="precio_min">Filtro precio mínimo: </label>
+                <input type="number" value="{{precio_min}}" name="precio_min" min="0" max="999999999" id="precio_min">
+            </div>
+            <div>
+                <label for="precio_max">Filtro precio máximo: </label>
+                <input type="number" value="{{precio_max}}" name="precio_max" min="0" max="999999999" id="precio_max">
+            </div>
+            <div>
+                <input type="submit" value="Buscar">
+                <input type="reset" value="limpiar" id="reset_form_busqueda">
+            </div>
+        </form>
+    </div>
+ 
+    <div>
+        <h3>Listado de productos</h3>
+        <p>Cantidad de productos: {{productos|length}}</p>
+        <ol>
+        {% for producto in productos %}
+            <li>Nombre: {{producto.nombre}}, Precio: {{producto.precio}}, Stock: {{producto.stock}}</li>
+        {% endfor %}
+        </ol>
+    </div>
+    <hr>
+    <div>
+        <h3>Listado de categorias</h3>
+        <p>Cantidad de categorias: {{categorias|length}}</p>
+        <ol>
+        {% for categoria in categorias %}
+            <li>{{categoria.nombre}}</li>
+        {% endfor %}
+        </ol>
+    </div>
+   
+   
+</header>
+ 
+ 
+ 
+<script>
+    const reset_form_busqueda = document.getElementById("reset_form_busqueda");
+ 
+    reset_form_busqueda.addEventListener("click", (event) => {
+        event.preventDefault();
+ 
+        nombre.value = "";
+        precio_min.value = null;
+        precio_max.value= null;
+    })
+</script>
