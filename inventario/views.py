@@ -41,7 +41,7 @@ def listado_productos_view(request):
     limite_max= max((p.fecha_vencimiento for p in productos if p.fecha_vencimiento), default=None)       
         
     contexto["productos"] = productos
-    contexto["categorias"] = Categoria.objects.all()
+    contexto["categorias"] = Categoria.objects.all().order_by("nombre")
     contexto["nombre"] = nombre
     contexto["precio_min"] = precio_min
     contexto["precio_max"] = precio_max
