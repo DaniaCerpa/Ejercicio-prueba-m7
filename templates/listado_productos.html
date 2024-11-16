@@ -1,25 +1,36 @@
+{% load filtros_productos_extras %}
+
 <header>
     <h1>Listado de productos</h1>
  
     <div>
         <h2>Formulario de filtros:</h2>
-        <form method="get">
-            <div>
+        <form method="get" id="form_filtro_productos">
+             <div>
                 <label for="nombre">Filtro por nombre: </label>
-                <input type="text" value="{{nombre}}" name="nombre" id="nombre">
+                <input type="text" value="{{nombre}}" name="nombre" id="nombre" class="input">
             </div>
             <div>
                 <label for="precio_min">Filtro precio mínimo: </label>
-                <input type="number" value="{{precio_min}}" name="precio_min" min="0" max="999999999" id="precio_min">
+                <input type="number" value="{{precio_min}}" name="precio_min" min="0" max="999999999" id="precio_min" class="input">
             </div>
             <div>
                 <label for="precio_max">Filtro precio máximo: </label>
-                <input type="number" value="{{precio_max}}" name="precio_max" min="0" max="999999999" id="precio_max">
+                <input type="number" value="{{precio_max}}" name="precio_max" min="0" max="999999999" id="precio_max" class="input">
+            </div>
+            <div>
+                <label for="fecha_vencimiento_min">Fecha vencimiento mínima: </label>
+                <input type="date" value="{{fecha_vencimiento_min}}" name="fecha_vencimiento_min" id="fecha_vencimiento_min" min="{{limite_min |date:'Y-m-d'}}" class="input">
+            </div>
+            <div>
+                <label for="fecha_vencimiento_max">Fecha vencimiento máxima: </label>
+                <input type="date" value="{{fecha_vencimiento_max}}" name="fecha_vencimiento_max" id="fecha_vencimiento_max" max="{{limite_max |date:'Y-m-d'}}" class="input">
             </div>
             <div>
                 <input type="submit" value="Buscar">
                 <input type="reset" value="limpiar" id="reset_form_busqueda">
             </div>
+            
         </form>
     </div>
  
@@ -28,7 +39,17 @@
         <p>Cantidad de productos: {{productos|length}}</p>
         <ol>
         {% for producto in productos %}
-            <li>Nombre: {{producto.nombre}}, Precio: {{producto.precio}}, Stock: {{producto.stock}}</li>
+            <li>Nombre: {{producto.nombre}}, 
+                Precio: ${{producto.precio|currency}}, 
+                Stock: {{producto.stock|currency}},
+                <strong> 
+                    {% if producto.fecha_vencimiento %}
+                        Vencimiento: {{producto.fecha_vencimiento|date:"d-m-Y" }}
+                    {% else %}
+                        Vencimiento: N/A
+                    {% endif %}    
+                </strong>
+            </li>
         {% endfor %}
         </ol>
     </div>
@@ -50,12 +71,32 @@
  
 <script>
     const reset_form_busqueda = document.getElementById("reset_form_busqueda");
+    const form_filtro_productos = document.getElementById("form_filtro_productos");
  
     reset_form_busqueda.addEventListener("click", (event) => {
         event.preventDefault();
+        form_filtro_productos.reset();
+
+        /*Para limpiar el formulario de forma manual
+        
+        nombre.value = null;
+        precio_min.value = null
+        precio_max.value = null
+        fecha_vencimiento_min.value = null
+        fecha_vencimiento_max.value = null
+        */
  
-        nombre.value = "";
-        precio_min.value = null;
-        precio_max.value= null;
+        //Para limpiar el formulario seleccionando todos los inputs clase input (se especifica en cada uno)
+        let inputs = document.querySelectorAll('.input');
+ 
+        //Se vuelve un array, lo que da mas opciones de manejo
+        inputs = [...inputs]
+ 
+        //Se utiliza html y no Django html para el desarrollo de este for
+        for (const input of inputs) {
+            input.value = null
+        }
+   
+        form_filtro_productos.submit()
     })
 </script>

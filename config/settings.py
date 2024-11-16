@@ -22,8 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-(nmn^_#(6o^^#brr0ts(rl9rbcu@f^0m^(bvv*_6-!p_pel(9s'
-
+SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -79,11 +78,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
 	"default": {
 	"ENGINE": "django.db.backends.postgresql",
-	"NAME": "verceldb",
-	"USER": "default",
-	"PASSWORD": "qAkYs8PT4dhH",
-	"HOST": "ep-jolly-bird-a4qqfc19.us-east-1.aws.neon.tech",
-	"PORT": "5432",
+	"NAME": config('NAME_DB'),
+	"USER": config('USER_DB'),
+	"PASSWORD": config('PASSWORD_DB'),
+	"HOST": config('HOST_DB'),
+	"PORT": config('PORT_DB'),
     'OPTIONS': {'sslmode': 'require'},
     }}
 
